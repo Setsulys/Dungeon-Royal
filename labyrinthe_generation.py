@@ -92,36 +92,34 @@ def expand_labyrinthe():
 
     return dungeon
 
-
-def random_room_picker(dungeon):
+def change_room_to(cell_type:CellType,dungeon: list[list[Cell]]):
     positions = [(i, j) for i, row in enumerate(dungeon) for j, cell in enumerate(row) if cell.type == CellType.ROOM]
-
     if not positions:
         return None
-    return random.choice(positions)
-
-
-def labyrinthe_add_stairs(dungeon):
-    up_x,up_y = random_room_picker(dungeon)
-    down_x,down_y = random_room_picker(dungeon)
-    dungeon[up_x][up_y]=Cell(CellType.STAIR_UP)
-    dungeon[down_x][down_y]=Cell(CellType.STAIR_DOWN)
+    random_room = random.choice(positions)
+    x,y = random_room
+    dungeon[x][y]=Cell(cell_type)
     return dungeon
 
-def add_element(dungeon,number_of_element,element_type):
+
+def labyrinthe_add_both_stairs(dungeon: list[list[Cell]]):
+    dungeon = change_room_to(CellType.STAIR_UP,dungeon)
+
+    return change_room_to(CellType.STAIR_DOWN,dungeon)
+
+def add_element(dungeon: list[list[Cell]],number_of_element:int,element_type:CellType):
     for _ in range(number_of_element):
-        mst_x,mst_y = random_room_picker(dungeon)
-        dungeon[mst_x][mst_y]=Cell(element_type)
+        change_room_to(element_type,dungeon)
     return dungeon
 
 def create_dungeon(nb_monster,nb_treasure):
     dungeon = expand_labyrinthe()
-    dungeon = labyrinthe_add_stairs(dungeon)
+    dungeon = labyrinthe_add_both_stairs(dungeon)
     dungeon =add_element(dungeon,nb_monster,CellType.MONSTER)
     return add_element(dungeon,nb_treasure,CellType.TREASURE)
      
 
-def character_is_in_wall(dungeon,x,y):
+def character_is_in_wall(dungeon: list[list[Cell]],x,y):
     if dungeon[x][y].type == CellType.WALL:
         return 1
     return 0
