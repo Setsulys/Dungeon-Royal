@@ -1,5 +1,7 @@
 from enum import Enum,auto
 import random
+
+
 class CellType(Enum):
     WALL = auto()
     ROOM = auto()
@@ -47,6 +49,7 @@ def expand_maze(maze_size:tuple[int,int],depart:tuple[int,int]):
         if not found:
             pile.pop()
     dungeon[dx][dy].type=CellType.STAIR_UP
+    dungeon = change_room_to(CellType.STAIR_DOWN,dungeon)
     return dungeon
 
 
@@ -71,17 +74,11 @@ def change_room_to(cell_type:CellType,dungeon: list[list[Cell]]):
         rooms = remaining_dead_end(dungeon,rooms)
         if not rooms:
             return None
-
     x,y = random.choice(rooms)
-    dungeon[x][y] = Cell(cell_type)
 
+    dungeon[x][y] = Cell(cell_type)
     return dungeon
 
-def maze_add_both_stairs(dungeon: list[list[Cell]]):
-    dungeon = change_room_to(CellType.STAIR_UP,dungeon)
-    if not dungeon:
-        return None
-    return change_room_to(CellType.STAIR_DOWN,dungeon)
 
 def add_element(dungeon: list[list[Cell]],number_of_element:int,element_type:CellType):
     for _ in range(number_of_element):
@@ -98,7 +95,6 @@ def create_dungeon(level_design:tuple[int,int,int]):
 
     # create maze and add stairs
     dungeon = expand_maze(maze_size,depart_position)
-    dungeon = maze_add_both_stairs(dungeon)
     # Add the entities to the dungeon
     if not dungeon:
         return None

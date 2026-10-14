@@ -1,10 +1,10 @@
-from maze_generation import create_dungeon,CellType
-from leveldesign import compute_element_from_character_level
+from dungeon.generator.maze_generation import create_dungeon,CellType
+from dungeon.generator.leveldesign import compute_element_from_character_level
 
 symbols = {
     CellType.WALL: "■",
     CellType.ROOM: " ",
-    CellType.MONSTER: "M",
+    CellType.MONSTER: "0",
     CellType.TREASURE: "T",
     CellType.STAIR_UP: "U",
     CellType.STAIR_DOWN: "D"
