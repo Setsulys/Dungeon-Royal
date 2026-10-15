@@ -1,4 +1,5 @@
 from enum import Enum,auto
+from dungeon.generator.common_tools.common_tools import remaining_cell_type
 import random
 
 
@@ -53,9 +54,6 @@ def expand_maze(maze_size:tuple[int,int],depart:tuple[int,int]):
     return dungeon
 
 
-def remaining_rooms(dungeon: list[list[Cell]]):
-    return [(i, j) for i, row in enumerate(dungeon) for j, cell in enumerate(row) if cell.type == CellType.ROOM]
-
 
 def remaining_dead_end(dungeon: list[list[Cell]],rooms:list[tuple[int,int]]):
     treasure_compatible = []
@@ -66,7 +64,7 @@ def remaining_dead_end(dungeon: list[list[Cell]],rooms:list[tuple[int,int]]):
     return treasure_compatible
 
 def change_room_to(cell_type:CellType,dungeon: list[list[Cell]]):
-    rooms = remaining_rooms(dungeon)
+    rooms = remaining_cell_type(dungeon,CellType.ROOM)
     if not rooms:
         return None
 
