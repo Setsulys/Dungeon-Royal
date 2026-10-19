@@ -1,5 +1,5 @@
 from enum import Enum,auto
-from dungeon.generator.common_tools.common_tools import remaining_cell_type
+from dungeon.common_tools.common_tools import remaining_cell_type
 import random
 
 

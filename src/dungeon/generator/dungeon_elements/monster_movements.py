@@ -1,7 +1,7 @@
 import random
 
 from dungeon.generator.maze_generation import Cell,CellType
-from dungeon.generator.common_tools.common_tools import remaining_cell_type
+from dungeon.common_tools.common_tools import remaining_cell_type
 
 
 def all_monster_movements(dungeon:list[list[Cell]]):
