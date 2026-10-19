@@ -1,6 +1,6 @@
 from dungeon.generator.dungeon_elements.entities import  Character, Living
 import dungeon.generator.dungeon_elements.monster_set as monsters
-from enum import Enum,auto
+
 def fight(character:Living,monster:Living):
 
     attacker,defender = (character,monster) if character.speed >=monster.speed else (monster,character)
@@ -14,21 +14,6 @@ def fight(character:Living,monster:Living):
         defender.health -= attacker.atk
         if defender.health <=0:
            return attacker
-
-
-
-class Action(Enum):
-    OBJECT=auto()
-    SKILL = auto()
-    SIMPLE_ATTACK = auto()
-    FLEE = auto()
-
-def select_action():
-    
-    return
-
-
-
 
 if __name__ == "__main__":
     hero = Character("Geralt",level=15, health=100, speed=12, atk=20)
