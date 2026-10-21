@@ -1,12 +1,12 @@
-from dungeon.generator.dungeon_elements.entities import Character, Living
+from dungeon.generator.dungeon_elements.entities import  Character, Living
 import dungeon.generator.dungeon_elements.monster_set as monsters
+
 def fight(character:Living,monster:Living):
 
     attacker,defender = (character,monster) if character.speed >=monster.speed else (monster,character)
 
     while True:
-
-        attacker.health -= defender.atk
+        attacker.health -= defender.skills
         print(attacker.name,"\t\tmade",attacker.atk,"dmg :\t",defender.name,"\t\t\t\thealth",defender.health)
         if attacker.health <=0:
            return defender
@@ -15,10 +15,8 @@ def fight(character:Living,monster:Living):
         if defender.health <=0:
            return attacker
 
-
-
 if __name__ == "__main__":
     hero = Character("Geralt",level=15, health=100, speed=12, atk=20)
-    winner = fight(hero, monsters.dragon)
+    winner = fight(hero, monsters.SKELETTON)
     # Affichage du gagnant
     print(f"Le combat est terminé ! Le vainqueur est : {winner.name}")
