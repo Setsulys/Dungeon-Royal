@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 
+from dungeon.models.Point import Point
+
+
 @dataclass
 class Player:
     position: Point

@@ -1,7 +1,5 @@
 from enum import Enum
 
-from dataclasses import dataclass
-
 
 class Direction(Enum):
     UP = (0, -1)
