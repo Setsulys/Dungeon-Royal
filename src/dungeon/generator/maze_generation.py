@@ -1,31 +1,13 @@
-from enum import Enum, auto
+from dungeon.models import Cell, CellType
 import random
 
 from dungeon.models import Direction, Point
 
 
-class CellType(Enum):
-    WALL = auto()
-    ROOM = auto()
-    MONSTER = auto()
-    TREASURE = auto()
-    STAIR_UP = auto()
-    STAIR_DOWN = auto()
-
-
-class Cell:
-    def __init__(self, cell_type, entity=None):
-        self.type = cell_type
-        self.entity = entity
-
-
-# Le donjon reste une liste de lignes, mais on ne l'indexe JAMAIS a la main :
-# une seule convention, Point(x=colonne, y=ligne), donc dungeon[point.y][point.x].
 Dungeon = list[list[Cell]]
 
 
 def size_of(dungeon: Dungeon) -> tuple[int, int]:
-    """Renvoie (largeur, hauteur) du donjon."""
     return len(dungeon[0]), len(dungeon)
 
 
@@ -43,7 +25,6 @@ def in_bounds(dungeon: Dungeon, point: Point) -> bool:
 
 
 def is_inner(dungeon: Dungeon, point: Point) -> bool:
-    """Interieur du donjon : les bordures restent des murs (topologie close)."""
     width, height = size_of(dungeon)
     return 1 <= point.x < width - 1 and 1 <= point.y < height - 1
 
@@ -63,7 +44,6 @@ def expand_maze(width: int, height: int, depart: Point) -> Dungeon:
             voisin = current.translate(direction, 2)
 
             if is_inner(dungeon, voisin) and cell_at(dungeon, voisin).type == CellType.WALL:
-                # on perce le mur intermediaire, puis la cellule visee
                 set_cell(dungeon, current.translate(direction), Cell(CellType.ROOM))
                 set_cell(dungeon, voisin, Cell(CellType.ROOM))
 
@@ -120,12 +100,9 @@ def add_element(dungeon: Dungeon, number_of_element: int, element_type: CellType
 def create_dungeon(level_design: tuple[int, int, int]):
     size, monster, treasure = level_design
 
-    # position de depart aleatoire, sur une coordonnee impaire
     depart = Point(random.randrange(1, size - 1, 2), random.randrange(1, size - 1, 2))
 
-    # creation du labyrinthe et pose des escaliers
     dungeon = expand_maze(size, size, depart)
-    # ajout des entites dans le donjon
     if not dungeon:
         return None
     dungeon = add_element(dungeon, monster, CellType.MONSTER)

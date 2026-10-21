@@ -2,12 +2,12 @@ import pygame
 from enum import Enum,auto
 
 class Input(Enum):
-    UP = auto
-    DOWN = auto
-    LEFT = auto
-    RIGHT = auto
-    CONFIRM = auto
-    CANCEL = auto
+    UP = auto()
+    DOWN = auto()
+    LEFT = auto()
+    RIGHT = auto()
+    CONFIRM = auto()
+    CANCEL = auto()
 
 class InputHandler:
     def __init__(self):

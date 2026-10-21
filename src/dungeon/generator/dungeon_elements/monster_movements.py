@@ -1,6 +1,6 @@
 import random
 
-from dungeon.generator.maze_generation import Cell,CellType
+from dungeon.models import Cell,CellType
 from dungeon.common_tools.common_tools import remaining_cell_type
 
 

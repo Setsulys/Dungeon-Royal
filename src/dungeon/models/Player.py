@@ -8,5 +8,5 @@ class Player:
     position: Point
     glyph: str = "@"
 
-    def move_to(self, position: Point):
+    def _set_position(self, position: Point):
         self.position = position
