@@ -1,5 +1,7 @@
-from enum import Enum,auto
+from enum import Enum, auto
 import random
+
+from dungeon.models import Direction, Point
 
 
 class CellType(Enum):
@@ -10,95 +12,121 @@ class CellType(Enum):
     STAIR_UP = auto()
     STAIR_DOWN = auto()
 
+
 class Cell:
     def __init__(self, cell_type, entity=None):
         self.type = cell_type
         self.entity = entity
 
 
-def expand_maze(maze_size:tuple[int,int],depart:tuple[int,int]):
-    maze_height,maze_width=maze_size
-    dx,dy=depart
-    dungeon = [[Cell(CellType.WALL) for _ in range(maze_width)] for _ in range(maze_height)]
+# Le donjon reste une liste de lignes, mais on ne l'indexe JAMAIS a la main :
+# une seule convention, Point(x=colonne, y=ligne), donc dungeon[point.y][point.x].
+Dungeon = list[list[Cell]]
 
-    directions = [(-2,0),(2,0),(0,-2),(0,2)]
 
+def size_of(dungeon: Dungeon) -> tuple[int, int]:
+    """Renvoie (largeur, hauteur) du donjon."""
+    return len(dungeon[0]), len(dungeon)
+
+
+def cell_at(dungeon: Dungeon, point: Point) -> Cell:
+    return dungeon[point.y][point.x]
+
+
+def set_cell(dungeon: Dungeon, point: Point, cell: Cell) -> None:
+    dungeon[point.y][point.x] = cell
+
+
+def in_bounds(dungeon: Dungeon, point: Point) -> bool:
+    width, height = size_of(dungeon)
+    return 0 <= point.x < width and 0 <= point.y < height
+
+
+def is_inner(dungeon: Dungeon, point: Point) -> bool:
+    """Interieur du donjon : les bordures restent des murs (topologie close)."""
+    width, height = size_of(dungeon)
+    return 1 <= point.x < width - 1 and 1 <= point.y < height - 1
+
+
+def expand_maze(width: int, height: int, depart: Point) -> Dungeon:
+    dungeon = [[Cell(CellType.WALL) for _ in range(width)] for _ in range(height)]
+
+    directions = list(Direction)
     pile = [depart]
 
     while pile:
-        row,column=pile[-1]
+        current = pile[-1]
         random.shuffle(directions)
 
         found = False
-        for dl,dc in directions:
-            nl = row+dl
-            nc = column+dc
+        for direction in directions:
+            voisin = current.translate(direction, 2)
 
-            if (1 <= nl < maze_height - 1
-                    and 1 <= nc < maze_width - 1
-                    and dungeon[nl][nc].type == CellType.WALL):
+            if is_inner(dungeon, voisin) and cell_at(dungeon, voisin).type == CellType.WALL:
+                # on perce le mur intermediaire, puis la cellule visee
+                set_cell(dungeon, current.translate(direction), Cell(CellType.ROOM))
+                set_cell(dungeon, voisin, Cell(CellType.ROOM))
 
-                dungeon[row + dl // 2][column + dc // 2] = Cell(CellType.ROOM)
-
-                dungeon[nl][nc] = Cell(CellType.ROOM)
-
-                pile.append((nl, nc))
+                pile.append(voisin)
                 found = True
                 break
 
         if not found:
             pile.pop()
-    dungeon[dx][dy].type=CellType.STAIR_UP
-    dungeon = change_room_to(CellType.STAIR_DOWN,dungeon)
+
+    set_cell(dungeon, depart, Cell(CellType.STAIR_UP))
+    dungeon = change_room_to(CellType.STAIR_DOWN, dungeon)
     return dungeon
 
 
-def remaining_rooms(dungeon: list[list[Cell]]):
-    return [(i, j) for i, row in enumerate(dungeon) for j, cell in enumerate(row) if cell.type == CellType.ROOM]
+def remaining_rooms(dungeon: Dungeon) -> list[Point]:
+    return [Point(x, y)
+            for y, row in enumerate(dungeon)
+            for x, cell in enumerate(row)
+            if cell.type == CellType.ROOM]
 
 
-def remaining_dead_end(dungeon: list[list[Cell]],rooms:list[tuple[int,int]]):
+def remaining_dead_end(dungeon: Dungeon, rooms: list[Point]) -> list[Point]:
     treasure_compatible = []
-    for x,y in rooms:
-        walls =sum(1 for i,j in ((x - 1, y),(x + 1, y),(x, y - 1),(x, y + 1)) if 0 <= i < len(dungeon) and 0 <= j < len(dungeon[i]) and dungeon[i][j].type == CellType.WALL)
+    for room in rooms:
+        voisins = [room.translate(direction) for direction in Direction]
+        walls = sum(1 for voisin in voisins
+                    if in_bounds(dungeon, voisin) and cell_at(dungeon, voisin).type == CellType.WALL)
         if walls == 3:
-            treasure_compatible.append((x, y))
+            treasure_compatible.append(room)
     return treasure_compatible
 
-def change_room_to(cell_type:CellType,dungeon: list[list[Cell]]):
+
+def change_room_to(cell_type: CellType, dungeon: Dungeon):
     rooms = remaining_rooms(dungeon)
     if not rooms:
         return None
 
     if cell_type == CellType.TREASURE:
-        rooms = remaining_dead_end(dungeon,rooms)
+        rooms = remaining_dead_end(dungeon, rooms)
         if not rooms:
             return None
-    x,y = random.choice(rooms)
 
-    dungeon[x][y] = Cell(cell_type)
+    set_cell(dungeon, random.choice(rooms), Cell(cell_type))
     return dungeon
 
 
-def add_element(dungeon: list[list[Cell]],number_of_element:int,element_type:CellType):
+def add_element(dungeon: Dungeon, number_of_element: int, element_type: CellType):
     for _ in range(number_of_element):
-        change_room_to(element_type,dungeon)
+        change_room_to(element_type, dungeon)
     return dungeon
 
-def create_dungeon(level_design:tuple[int,int,int]):
 
-    size,monster,treasure = level_design
-    maze_size = (size,size)
+def create_dungeon(level_design: tuple[int, int, int]):
+    size, monster, treasure = level_design
 
-    #randomize depart position
-    depart_position = (random.randrange(1,size-1,2),random.randrange(1,size-1,2))
+    # position de depart aleatoire, sur une coordonnee impaire
+    depart = Point(random.randrange(1, size - 1, 2), random.randrange(1, size - 1, 2))
 
-    # create maze and add stairs
-    dungeon = expand_maze(maze_size,depart_position)
-    # Add the entities to the dungeon
+    # creation du labyrinthe et pose des escaliers
+    dungeon = expand_maze(size, size, depart)
+    # ajout des entites dans le donjon
     if not dungeon:
         return None
-    dungeon =add_element(dungeon,monster,CellType.MONSTER)
-    return add_element(dungeon,treasure,CellType.TREASURE)
-
-
+    dungeon = add_element(dungeon, monster, CellType.MONSTER)
+    return add_element(dungeon, treasure, CellType.TREASURE)

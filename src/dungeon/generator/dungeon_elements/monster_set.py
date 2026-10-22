@@ -2,46 +2,53 @@ from dungeon.generator.dungeon_elements.entities import Monster,Skill
 
 
 #Skills
-bump = Skill("Bump", damage=8)
+BUMP = Skill("Bump", damage=8)
 dague = Skill("Coup de Dague", damage=8)
-flee = Skill("Jet de pierre et fuite", damage=3)
-claw = Skill("claw", damage=15)
+ROCK_AND_FLEE = Skill("Jet de pierre et fuite", damage=3)
+CLAW = Skill("claw", damage=15)
+SWORD_SLASH = Skill("Sword_slash",damage=15)
+AXE_SLASH =  Skill("Axe Slash",damage=25)
 
 #Healing effects
-life_drain = Skill("Life drain", damage=8)
+LIFE_DRAIN = Skill("Life drain", damage=8)
 
 #With effects
-breath = Skill("Fire Breath", damage=40)
-fire_ball = Skill("Fire ball", damage=20)
-ice_spear = Skill("ice spear", damage=12)
-thunderbolt = Skill("Thunderbolt",damage=25)
-
+FIRE_BREATH = Skill("Fire Breath", damage=40)
+FIRE_BALL = Skill("Fire ball", damage=20)
+ICE_SPEAR = Skill("ice spear", damage=12)
+THUNDERBOLT = Skill("Thunderbolt",damage=25)
+REGEN = Skill("Regeneration",damage=0)
 # Status effects
 
 
-
-
-
 # Slime
-slime = Monster("Slime",level=1, health=50, speed=14, atk=5)
-slime.learn_monster_skill(bump,chance=100)
+SLIME = Monster("Slime",level=1, health=2, speed=14, atk=1)
+SLIME.learn_monster_skill(BUMP,chance=100)
 
 
 # Gobelin
-goblin = Monster("Gobelin",level=5, health=50, speed=14, atk=5)
-goblin.learn_monster_skill(dague, chance=20)
-goblin.learn_monster_skill(flee, chance=80)
+GOBLIN = Monster("Gobelin",level=5, health=50, speed=14, atk=5)
+GOBLIN.learn_monster_skill(dague, chance=20)
+GOBLIN.learn_monster_skill(BUMP, chance=80)
+
+#Skeleton
+SKELETTON=Monster("Skeleton",level=10,health=12,speed=12,atk=25)
+SKELETTON.learn_monster_skill(SWORD_SLASH,chance=100)
+
+#Minautorus
+MINAUTOR=Monster("Minautor",level=20,health=85,speed=12,atk=25)
+MINAUTOR.learn_monster_skill(AXE_SLASH,chance=100)
 
 
 # Lich
-lich = Monster("lich",level=45, health=50, speed=14, atk=5)
-lich.learn_monster_skill(life_drain, chance=20)
-lich.learn_monster_skill(fire_ball, chance=80)
+LICH = Monster("lich",level=45, health=50, speed=14, atk=5)
+LICH.learn_monster_skill(LIFE_DRAIN, chance=20)
+LICH.learn_monster_skill(FIRE_BALL, chance=80)
 
 # Dragon
-dragon = Monster("Arch Dragon",level=100, health=200, speed=8, atk=15)
-dragon.learn_monster_skill(claw, chance=70)
-dragon.learn_monster_skill(breath, chance=30)
+DRAGON = Monster("Arch Dragon",level=100, health=200, speed=8, atk=15)
+DRAGON.learn_monster_skill(CLAW, chance=70)
+DRAGON.learn_monster_skill(FIRE_BREATH, chance=30)
 
 
 
