@@ -18,3 +18,8 @@ python -m pip install --upgrade pip
 ```bash
 python -m pip install pygame
 ```
+
+## Install PyYAML
+```bash
+python -m pip install pyYAML
+```

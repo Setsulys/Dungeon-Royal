@@ -1,0 +1,9 @@
+game:
+  title: "Dungeon Royal"
+  welcome: "Bienvenu dans le donjon!"
+  game_over: "Vous etes mort"
+
+  confirmation_message: "Confirmer?"
+  confirmation: "Oui"
+  non_confirmation: "Non"
+
