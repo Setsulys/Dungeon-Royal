@@ -21,18 +21,31 @@ class MenuAction(Enum):
     LOAD = auto()
     SETTING = auto()
 
+
+class SaveSlot():
+    pass
+
+
 class MainMenu():
-    def __init__(self):
-        self.current_menu = MenuType.MAIN_MENU
+    # def __init__(self):
+    #     self.current_menu = MenuType.MAIN_MENU
+    #     self.selected_action_index=0
+    #     self.menu_action = list(MenuAction)
+    #     self.load_slots = list(saveSlot(),saveSlot(),saveSlot())
+    #     self.menu_stack =[]
+    #
+    # def change_menu(self,menu_type:MenuType):
+    #     self.menu_stack.append((self.current_menu,self.selected_action_index))
+    #     self.current_menu = menu_type
+    #     self.selected_action_index = 0
+    #
+    # def go_back(self):
+    #     if self.menu_stack:
+    #         self.current_menu,self.selected_action_index =self.menu_stack.pop()
 
 
-    def change_menu(self,):
 
-    def start_game():
-        ##
-    def load_game():
 
-    def settings():
 
 
     def leave_game():

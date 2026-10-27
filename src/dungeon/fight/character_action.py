@@ -63,7 +63,7 @@ class BattleMenu:
                     self.go_back()
         return None
 
-    def test_menu(self,selector):
+    def main_battle_menu(self,selector):
         selection = self.battle_menu_handler(selector)
         match selection:
             case Action.SIMPLE_ATTACK:
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         else:
             continue
 
-        result = menu.test_menu(selector)
+        result = menu.main_battle_menu(selector)
 
         if result is not None:
             print(f"\nAction retournée : {result}")

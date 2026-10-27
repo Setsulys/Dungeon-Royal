@@ -1,6 +1,12 @@
 import yaml
 from pathlib import Path
 
+
+RESOURCES_DIR = (
+    Path(__file__).parent.parent.parent
+    / "locales"
+)
+
 class TextManager:
         def __init__(self,language: str="en"):
             self.language=language
@@ -8,7 +14,7 @@ class TextManager:
             self.load_language(language)
 
         def load_language(self,language:str)->None:
-            path = Path(__file__).parent.parent.parent / "locales" / f"{language}.yaml"
+            path = RESOURCES_DIR / f"{language}.yaml"
 
             self.texts = yaml.safe_load(
                 path.read_text(encoding="utf-8")
