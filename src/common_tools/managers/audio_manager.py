@@ -4,11 +4,13 @@ import pygame
 from enum import Enum,auto
 from pathlib import Path
 
-RESOURCES_DIR = (
-    Path(__file__).parent.parent.parent
-    /"locales"
-    /"resources"
-)
+from common_tools.managers.ressource_path import RESOURCES_DIR
+
+AUDIO_DIR = RESOURCES_DIR / "audios"
+
+MUSIC_DIR = AUDIO_DIR / "musics"
+
+SOUND_DIR = AUDIO_DIR / "sounds"
 
 class Volume(Enum):
     UP=auto()
@@ -81,7 +83,7 @@ class AudioManager:
 
 
 if __name__ == "__main__":
-    path = RESOURCES_DIR / "Life Will Change.mp3"
+    path = MUSIC_DIR/ "Life Will Change.mp3"
     audio_manager = AudioManager()
     audio_manager.play_music(path)
     #

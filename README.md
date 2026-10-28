@@ -23,3 +23,8 @@ python -m pip install pygame
 ```bash
 python -m pip install pyYAML
 ```
+
+## Install screeninfo
+```bash
+python -m pip install screeninfo
+```

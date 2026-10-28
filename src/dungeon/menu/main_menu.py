@@ -4,8 +4,7 @@
 
 from enum import Enum,auto
 import sys
-from dungeon.common_tools.text_manager import TextManager
-from dungeon.common_tools.input_handler import Input
+from common_tools.managers.text_manager import TextManager,TextKey
 
 texts= TextManager("fr")
 
@@ -27,6 +26,7 @@ class SaveSlot():
 
 
 class MainMenu():
+    pass
     # def __init__(self):
     #     self.current_menu = MenuType.MAIN_MENU
     #     self.selected_action_index=0
@@ -48,8 +48,8 @@ class MainMenu():
 
 
 
-    def leave_game():
-        sys.exit()
+    # def leave_game():
+    #     sys.exit()
 
 
 
@@ -58,7 +58,7 @@ class MainMenu():
 
 
 def display_confirmation_message():
-    return texts.get("game.confirmation_message")
+    return texts.get(TextKey.GAME_CONFIRMATION_MESSAGE)
 
 
 def confirmation_message()->bool:

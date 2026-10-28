@@ -1,0 +1,11 @@
+game:
+  title: "Dungeon Royal"
+  main:
+    new_game: "Nouveau jeu"
+    load: "Charger"
+    settings: "Parametres"
+    leave: "Quitter"
+
+
+  confirmation_message: "Confirmer?"
+
