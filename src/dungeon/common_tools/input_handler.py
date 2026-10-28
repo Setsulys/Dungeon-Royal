@@ -18,8 +18,8 @@ class InputHandler:
             pygame.K_RIGHT: Input.RIGHT,
             pygame.K_z: Input.UP,
             pygame.K_s: Input.DOWN,
-            pygame.K_q: Input.RIGHT,
-            pygame.K_d: Input.LEFT,
+            pygame.K_q: Input.LEFT,
+            pygame.K_d: Input.RIGHT,
             pygame.K_RETURN: Input.CONFIRM,
             pygame.K_ESCAPE: Input.CANCEL,
         }
