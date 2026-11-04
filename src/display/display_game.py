@@ -1,6 +1,7 @@
 import pygame
 from pygame.surface import SurfaceType
 from math import ceil
+
 from setup import *
 from common_tools.managers.text_manager import *
 from common_tools.managers.image_manager import Image
@@ -8,6 +9,7 @@ from common_tools.managers.image_manager import Image
 HEIGHT_SIZE = 720
 FONT_TYPE = "Arial"
 FONT_SIZE = ceil(HEIGHT_SIZE / 33)
+text_manager = TextManager(TextLanguage.FR)
 
 
 def display_game():
@@ -20,24 +22,38 @@ def display_game():
     running=True
     police = pygame.font.SysFont(FONT_TYPE, FONT_SIZE)
 
-    buttons=[TextKey.GAME_MAIN_NEW_GAME,TextKey.GAME_MAIN_LOAD,TextKey.GAME_MAIN_SETTING,TextKey.GAME_MAIN_LEAVE]
+    buttons=[TextMainButton.NEW_GAME,TextMainButton.LOAD,TextMainButton.SETTING,TextMainButton.LEAVE]
     list_rect_buttons=create_buttons(screen,window.width,buttons)
     while running:
         read_image(screen,Image.Player,(0,0))
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            event_handler = main_menu_handler(list_rect_buttons,event)
+            if event_handler != None:
+                print(text_manager.get(event_handler))
+            if event_handler == TextMainButton.LEAVE:
                 running=False
-        draw_buttons(screen,list(list_rect_buttons),police)
+        draw_buttons(screen,list_rect_buttons,police)
         pygame.display.flip()
     pygame.quit()
 
-
-
-
 ############
 
+def main_menu_handler(buttons_position:list[tuple[pygame.Rect,TextMainButton]], event: pygame.event.Event):
+    if event.type == pygame.QUIT:
+        return TextMainButton.LEAVE
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        pos_x,pos_y=pygame.mouse.get_pos()
+        for rect,button_name in buttons_position:
+            button_top_x,button_top_y= rect.topleft
+            button_bottom_x,button_bottom_y=rect.bottomright
+            if button_top_x <= pos_x <= button_bottom_x and button_top_y <= pos_y <= button_bottom_y:
+                return button_name
+    return None
 
-def create_buttons(screen:SurfaceType,window_width:int,buttons:list[TextKey]):
+
+
+
+def create_buttons(screen:SurfaceType,window_width:int,buttons:list[TextMainButton]):
 
     button_width= window_width /10
     button_height = HEIGHT_SIZE / 10
@@ -53,10 +69,10 @@ def create_buttons(screen:SurfaceType,window_width:int,buttons:list[TextKey]):
         rect = pygame.Rect(0,y_position,button_width,button_height)
         rect.centerx = screen_rect.centerx
         list_rects.append(rect)
-    return zip(list_rects,buttons)
+    return list(zip(list_rects,buttons))
 
 
-def draw_buttons(screen:SurfaceType, list_rec_buttons:list[tuple[pygame.Rect,TextKey]], police:pygame.font.Font):
+def draw_buttons(screen:SurfaceType, list_rec_buttons:list[tuple[pygame.Rect,TextMainButton]], police:pygame.font.Font):
     for rect,text in list_rec_buttons:
         text_surface = police.render(texts.get(text),True,(255,255,255))
         text_rect = text_surface.get_rect()
