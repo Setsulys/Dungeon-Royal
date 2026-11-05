@@ -33,13 +33,9 @@ def expand_maze(width: int, height: int, depart: Point) -> Grid:
             pile.pop()
 
     grid[depart] = Cell(CellType.STAIR_UP)
-    rooms = remaining_rooms(grid)
+    rooms = grid.points_of_type(CellType.ROOM)
     grid[max(rooms, key=depart.distance_manhattan)] = Cell(CellType.STAIR_DOWN)
     return grid
-
-
-def remaining_rooms(grid: Grid) -> list[Point]:
-    return [point for point in grid if grid[point].type == CellType.ROOM]
 
 
 def remaining_dead_end(grid: Grid, rooms: list[Point]) -> list[Point]:
@@ -54,7 +50,7 @@ def remaining_dead_end(grid: Grid, rooms: list[Point]) -> list[Point]:
 
 
 def change_room_to(cell_type: CellType, grid: Grid):
-    rooms = remaining_rooms(grid)
+    rooms = grid.points_of_type(CellType.ROOM)
     if not rooms:
         return None
 

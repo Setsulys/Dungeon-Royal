@@ -61,3 +61,10 @@ class Grid:
     def neighbors(self, point: Point, step: int = 1) -> list[Point]:
         voisins = (point.translate(direction, step) for direction in Direction)
         return [voisin for voisin in voisins if voisin in self._cells]
+
+    def items(self):
+        return self._cells.items()
+
+    def points_of_type(self, *cell_type: CellType) -> list[Point]:
+        researchs =frozenset(cell_type)
+        return [point for point, cell in self.items() if cell.type in researchs]
