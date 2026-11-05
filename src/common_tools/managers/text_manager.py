@@ -3,8 +3,11 @@ from enum import Enum
 from typing import Union
 
 from common_tools.managers.ressource_path import RESOURCES_DIR
+from common_tools import GAME_LANGUAGE
 
 LANGUAGES_DIR = RESOURCES_DIR / "languages"
+
+
 
 class TextLanguage(Enum):
     FR="fr"
@@ -24,7 +27,6 @@ class TextManager:
         def __init__(self,language:TextLanguage=TextLanguage.EN):
             self.language=self.load_language(language.value)
             self.texts={}
-            self.load_language(language.value)
 
         def load_language(self,language:str)->None:
             path = LANGUAGES_DIR / f"{language}.yaml"
@@ -39,3 +41,11 @@ class TextManager:
             for part in key.value.split(":"):
                 value = value[part]
             return value.format(**kwargs)
+
+        def set_language(self,new_language: TextLanguage):
+            self.language = new_language
+            self.load_language(new_language.value)
+
+
+def language_setting(language : TextLanguage)-> None:
+    GAME_LANGUAGE.set_language(language)

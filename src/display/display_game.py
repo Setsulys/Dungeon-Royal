@@ -4,11 +4,10 @@ from pygame.surface import SurfaceType
 
 from setup import *
 
-from common_tools.managers.image_manager import Image
+from common_tools import HEIGHT_SIZE, FONT_SIZE, FONT_TYPE,GAME_LANGUAGE
 
 
 from common_tools.common_tools import create_centered_chained_buttons
-from common_tools.global_elements import *
 
 
 
@@ -30,7 +29,7 @@ def display_game():
         for event in pygame.event.get():
             event_handler = main_menu_handler(list_rect_buttons,event)
             if event_handler != None:
-                print(text_manager.get(event_handler))
+                print(GAME_LANGUAGE.get(event_handler))
             if event_handler == TextMainButton.LEAVE:
                 running=False
         draw_buttons(screen,list_rect_buttons,police)
