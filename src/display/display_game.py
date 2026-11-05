@@ -1,15 +1,16 @@
-import pygame
+
 from pygame.surface import SurfaceType
-from math import ceil
+
 
 from setup import *
-from common_tools.managers.text_manager import *
+
 from common_tools.managers.image_manager import Image
 
-HEIGHT_SIZE = 720
-FONT_TYPE = "Arial"
-FONT_SIZE = ceil(HEIGHT_SIZE / 33)
-text_manager = TextManager(TextLanguage.FR)
+
+from common_tools.common_tools import create_centered_chained_buttons
+from common_tools.global_elements import *
+
+
 
 
 def display_game():
@@ -23,7 +24,7 @@ def display_game():
     police = pygame.font.SysFont(FONT_TYPE, FONT_SIZE)
 
     buttons=[TextMainButton.NEW_GAME,TextMainButton.LOAD,TextMainButton.SETTING,TextMainButton.LEAVE]
-    list_rect_buttons=create_buttons(screen,window.width,buttons)
+    list_rect_buttons=create_centered_chained_buttons(screen,window.width,buttons)
     while running:
         read_image(screen,Image.Player,(0,0))
         for event in pygame.event.get():
@@ -53,23 +54,7 @@ def main_menu_handler(buttons_position:list[tuple[pygame.Rect,TextMainButton]], 
 
 
 
-def create_buttons(screen:SurfaceType,window_width:int,buttons:list[TextMainButton]):
 
-    button_width= window_width /10
-    button_height = HEIGHT_SIZE / 10
-    spacing = window_width/100
-    screen_rect = screen.get_rect()
-
-    button_nb = len(buttons)
-    total_bloc_size = (button_nb * button_height) + ((button_nb-1)*spacing)
-    y_start = (HEIGHT_SIZE - total_bloc_size) //2
-    list_rects=[]
-    for i in range(button_nb):
-        y_position = y_start + i * (button_height+spacing)
-        rect = pygame.Rect(0,y_position,button_width,button_height)
-        rect.centerx = screen_rect.centerx
-        list_rects.append(rect)
-    return list(zip(list_rects,buttons))
 
 
 def draw_buttons(screen:SurfaceType, list_rec_buttons:list[tuple[pygame.Rect,TextMainButton]], police:pygame.font.Font):
