@@ -1,28 +1,20 @@
 import random
 
-from dungeon.models import Cell,CellType
-from dungeon.common_tools.common_tools import remaining_cell_type
+from dungeon.models import CellType, Grid, Point, Cell
 
 
-def all_monster_movements(dungeon:list[list[Cell]]):
-    monster_positions =remaining_cell_type(dungeon,CellType.MONSTER)
-    dungeon =list(map(lambda x: monster_movement(dungeon,*x[1:]),monster_positions))
-    return dungeon
+def all_monster_movements(grid: Grid) -> None:
+    for position in grid.points_of_type(CellType.MONSTER):
+        monster_movement(grid, position)
 
-def monster_movement(dungeon:list[list[Cell]],x:int,y:int):
-    movements=[(-1, 0), (1, 0), (0, -1), (0, 1),(0,0)]
-    possible_movements=[
-        (nx, ny)
-        for dx, dy in movements
-        if dungeon[nx := x + dx][ny := y + dy].type in (CellType.ROOM,CellType.MONSTER)
-    ]
+def monster_movement(grid: Grid, position: Point) -> None:
+    cibles = [p for p in grid.neighbors(position) if grid[p].type in (CellType.ROOM, CellType.MONSTER)]
+    cibles.append(position)
 
-    # si le monstre ne bouge pas on change rien
-    i,j = random.choice(possible_movements)
-    if i==x and j==y:
-        return dungeon
-    # si le monstre bouge, on inverse avec room
-    dungeon[i][j].type=CellType.MONSTER
-    dungeon[x][y].type=CellType.ROOM
+    cible = random.choice(cibles)
 
-    return dungeon
+    if cible == position:
+        return
+
+    grid[cible] = Cell(CellType.MONSTER)
+    grid[position] = Cell(CellType.ROOM)
