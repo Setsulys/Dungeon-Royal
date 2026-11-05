@@ -1,5 +1,6 @@
-from dungeon.generator.maze_generation import create_dungeon,CellType
+from dungeon.generator.maze_generation import create_dungeon
 from dungeon.generator.leveldesign import compute_element_from_character_level
+from dungeon.models.CellType import CellType
 
 symbols = {
     CellType.WALL: "■",

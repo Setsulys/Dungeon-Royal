@@ -1,16 +1,19 @@
 from enum import Enum
 
+from dungeon.models.Point import Point
+
 
 class Direction(Enum):
-    UP = (0, -1)
-    DOWN = (0, 1)
-    LEFT = (-1, 0)
-    RIGHT = (1, 0)
+    UP = Point(0, -1)
+    DOWN = Point(0, 1)
+    LEFT = Point(-1, 0)
+    RIGHT = Point(1, 0)
 
     @property
     def dx(self):
-        return self.value[0]
+        return self.value.x
 
     @property
     def dy(self):
-        return self.value[1]
+        return self.value.y
+
