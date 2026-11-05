@@ -1,17 +1,18 @@
 import yaml
 from enum import Enum
 from typing import Union
-
+from configuration import config
 from common_tools.managers.ressource_path import RESOURCES_DIR
-from common_tools import GAME_LANGUAGE
+
 
 LANGUAGES_DIR = RESOURCES_DIR / "languages"
-
 
 
 class TextLanguage(Enum):
     FR="fr"
     EN="en"
+    DE="de"
+
 
 class TextKey(Enum):
     GAME_TITLE = "game:title"
@@ -24,9 +25,10 @@ class TextMainButton(Enum):
     LEAVE = "game:main:leave"
 
 class TextManager:
-        def __init__(self,language:TextLanguage=TextLanguage.EN):
-            self.language=self.load_language(language.value)
+        def __init__(self,language:TextLanguage= TextLanguage.EN):
+            self.language=language
             self.texts={}
+            self.load_language(language.value)
 
         def load_language(self,language:str)->None:
             path = LANGUAGES_DIR / f"{language}.yaml"
@@ -37,7 +39,6 @@ class TextManager:
 
         def get(self,key:Union[TextKey,TextMainButton],**kwargs)->str:
             value = self.texts
-
             for part in key.value.split(":"):
                 value = value[part]
             return value.format(**kwargs)
@@ -48,4 +49,4 @@ class TextManager:
 
 
 def language_setting(language : TextLanguage)-> None:
-    GAME_LANGUAGE.set_language(language)
+    config.GAME_LANGUAGE.set_language(language)

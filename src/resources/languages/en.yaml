@@ -1,0 +1,9 @@
+game:
+  title: "Dungeon Royal"
+  main:
+    new_game: "New Game"
+    load: "Load"
+    settings: "Settings"
+    leave: "Leave"
+  confirmation_message: "Confirm?"
+

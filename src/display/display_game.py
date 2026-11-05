@@ -1,26 +1,19 @@
-
 from pygame.surface import SurfaceType
-
-
 from setup import *
-
-from common_tools import HEIGHT_SIZE, FONT_SIZE, FONT_TYPE,GAME_LANGUAGE
-
-
+from configuration import config
 from common_tools.common_tools import create_centered_chained_buttons
-
-
+from common_tools.managers.text_manager import TextMainButton
 
 
 def display_game():
-    window = WindowsSize(HEIGHT_SIZE)
+    window = WindowsSize(config.HEIGHT_SIZE)
 
     pygame.init()
 
     screen = pygame.display.set_mode(window.get_point())
     icon_and_title()
     running=True
-    police = pygame.font.SysFont(FONT_TYPE, FONT_SIZE)
+    police = pygame.font.SysFont(config.FONT_TYPE, config.FONT_SIZE)
 
     buttons=[TextMainButton.NEW_GAME,TextMainButton.LOAD,TextMainButton.SETTING,TextMainButton.LEAVE]
     list_rect_buttons=create_centered_chained_buttons(screen,window.width,buttons)
@@ -29,7 +22,7 @@ def display_game():
         for event in pygame.event.get():
             event_handler = main_menu_handler(list_rect_buttons,event)
             if event_handler != None:
-                print(GAME_LANGUAGE.get(event_handler))
+                print(config.GAME_LANGUAGE.get(event_handler))
             if event_handler == TextMainButton.LEAVE:
                 running=False
         draw_buttons(screen,list_rect_buttons,police)
@@ -58,7 +51,7 @@ def main_menu_handler(buttons_position:list[tuple[pygame.Rect,TextMainButton]], 
 
 def draw_buttons(screen:SurfaceType, list_rec_buttons:list[tuple[pygame.Rect,TextMainButton]], police:pygame.font.Font):
     for rect,text in list_rec_buttons:
-        text_surface = police.render(texts.get(text),True,(255,255,255))
+        text_surface = police.render(config.GAME_LANGUAGE.get(text), True, (255, 255, 255))
         text_rect = text_surface.get_rect()
         text_rect.center = rect.center
         pygame.draw.rect(screen,(0,128,255),rect,border_radius=5)
