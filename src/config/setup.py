@@ -1,9 +1,8 @@
-import pygame
 from screeninfo import get_monitors
 
-from common_tools.managers.image_manager import *
-from common_tools.managers.text_manager import TextKey
-from configuration import config
+from managers.image_manager import *
+from managers.text_manager import TextKey
+from config import CONTEXT
 
 
 class WindowsSize:
@@ -19,7 +18,7 @@ class WindowsSize:
 
 
 def icon_and_title():
-    pygame.display.set_caption(config.GAME_LANGUAGE.get(TextKey.GAME_TITLE))
+    pygame.display.set_caption(CONTEXT.read(TextKey.GAME_TITLE))
     game_icon()
 
 

@@ -4,12 +4,10 @@ import pygame
 from enum import Enum,auto
 from pathlib import Path
 
-from common_tools.managers.ressource_path import RESOURCES_DIR
+from managers import RESOURCES_DIR
 
 AUDIO_DIR = RESOURCES_DIR / "audios"
-
 MUSIC_DIR = AUDIO_DIR / "musics"
-
 SOUND_DIR = AUDIO_DIR / "sounds"
 
 class Volume(Enum):

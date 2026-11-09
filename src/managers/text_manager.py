@@ -1,8 +1,7 @@
 import yaml
 from enum import Enum
 from typing import Union
-from configuration import config
-from common_tools.managers.ressource_path import RESOURCES_DIR
+from managers import RESOURCES_DIR
 
 
 LANGUAGES_DIR = RESOURCES_DIR / "languages"
@@ -43,10 +42,4 @@ class TextManager:
                 value = value[part]
             return value.format(**kwargs)
 
-        def set_language(self,new_language: TextLanguage):
-            self.language = new_language
-            self.load_language(new_language.value)
 
-
-def language_setting(language : TextLanguage)-> None:
-    config.GAME_LANGUAGE.set_language(language)
