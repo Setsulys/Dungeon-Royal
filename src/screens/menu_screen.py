@@ -3,7 +3,7 @@ from pygame.surface import SurfaceType
 
 from managers import read_image, ImageManager,TextMainButton
 from screens import Screen
-from tools import create_centered_chained_buttons, sliders
+from tools import create_centered_chained_buttons
 
 from config import CONTEXT,FONT_SIZE,FONT_TYPE
 
