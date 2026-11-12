@@ -18,3 +18,18 @@ python -m pip install --upgrade pip
 ```bash
 python -m pip install pygame
 ```
+
+## Install PyYAML
+```bash
+python -m pip install pyYAML
+```
+
+## Install screeninfo
+```bash
+python -m pip install screeninfo
+```
+
+## Install python widget
+```
+python -m pip install pygame-widgets
+```

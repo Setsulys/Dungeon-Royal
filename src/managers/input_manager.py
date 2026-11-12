@@ -1,6 +1,7 @@
 import pygame
 from enum import Enum,auto
 
+from dataclasses import dataclass
 class Input(Enum):
     UP = auto()
     DOWN = auto()
@@ -9,7 +10,8 @@ class Input(Enum):
     CONFIRM = auto()
     CANCEL = auto()
 
-class InputHandler:
+@dataclass(frozen=False)
+class InputManager:
     def __init__(self):
         self.actions={
             pygame.K_UP: Input.UP,
@@ -25,6 +27,12 @@ class InputHandler:
         }
 
     def handle_event(self,event):
-        if event.type!=pygame.KEYDOWN:
-            return None
-        return self.actions.get(event.key)
+        if event.type==pygame.KEYDOWN:
+            return self.actions.get(event.key)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button ==1:
+                return Input.CONFIRM
+            if event.button==3:
+                return Input.CANCEL
+
+        return None

@@ -12,6 +12,14 @@ class Skill:
         self.damage = damage
         self.effect = effect
 
+    def __str__(self) -> str: return f"{self.name}: {self.damage} dmg"
+
+class Item:
+    def __init__(self, name: str):
+        self.name = name
+
+    def __str__(self) -> str: return f"{self.name}"
+
 class Living:
     def __init__(self, name: str,level:int, health:int,speed:int,atk:int, position = None):
         self.name = name
@@ -21,6 +29,7 @@ class Living:
         self.speed = speed
         self.atk = atk
         self.skills = []
+        self.items=[]
         self.precision = []
         self.status_effect=[]
         self.position = position
@@ -31,6 +40,13 @@ class Living:
 
     def _set_position(self, position):
         self.position = position
+
+    def get_items(self,*item:Item):
+        for e in item:
+            self.items.append(e)
+
+    def use_item(self,item:Item):
+        self.items.remove(item)
 
 
 class Character(Living):
