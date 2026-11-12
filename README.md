@@ -28,3 +28,8 @@ python -m pip install pyYAML
 ```bash
 python -m pip install screeninfo
 ```
+
+## Install python widget
+```
+python -m pip install pygame-widgets
+```

@@ -3,9 +3,9 @@ from pygame.surface import SurfaceType
 
 from managers import read_image, ImageManager,TextMainButton
 from screens import Screen
+from tools import create_centered_chained_buttons, sliders
 
 from config import CONTEXT,FONT_SIZE,FONT_TYPE
-from common import create_centered_chained_buttons
 
 
 
@@ -66,3 +66,4 @@ def draw_buttons(screen:SurfaceType, list_rec_buttons:list[tuple[pygame.Rect,Tex
         text_rect.center = rect.center
         pygame.draw.rect(screen,(0,128,255),rect,border_radius=5)
         screen.blit(text_surface, text_rect)
+

@@ -11,7 +11,7 @@ class Input(Enum):
     CANCEL = auto()
 
 @dataclass(frozen=False)
-class InputHandler:
+class InputManager:
     def __init__(self):
         self.actions={
             pygame.K_UP: Input.UP,
